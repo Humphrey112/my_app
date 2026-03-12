@@ -9,7 +9,6 @@ class Loginscreen extends StatefulWidget {
 }
 
 class _LoginscreenState extends State<Loginscreen> {
-  // Requirement: Variable to track password visibility
   bool _isPasswordHidden = true;
 
   @override
@@ -19,42 +18,30 @@ class _LoginscreenState extends State<Loginscreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Stack(
-              children: [
-                CustomPaint(
-                  size: Size(MediaQuery.of(context).size.width, 340),
-                  painter: HeaderPainter(),
-                ),
-                Positioned(
-                  top: 90,
-                  left: 0,
-                  right: 0,
-                  child: Center(
-                    // TEACHER REQUIREMENT: Using Stack for the logo
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        // Layer 1: The Circle Border
-                        Container(
-                          width: 110,
-                          height: 110,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.white, width: 3.5),
-                          ),
-                        ),
-                        // Layer 2: The Bolt Icon stacked on top
-                        const Icon(
-                          Icons.bolt,
-                          size: 150,
-                          color: Colors.white,
-                        ),
-                      ],
-                    ),
+
+              Container(
+                width: double.infinity,
+                height: 250,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.deepOrange.shade900, Colors.deepOrange.shade400,
+                      
+                    ]
+              
                   ),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(120),
+                  )
                 ),
-              ],
-            ),
+                child:Center(
+                    child: Image.asset('assets/work.png', height: 120,width: 120,
+                fit: BoxFit.contain,)
+                
+              ),
+              ),
 
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -70,7 +57,6 @@ class _LoginscreenState extends State<Loginscreen> {
                   
                   const SizedBox(height: 20),
                   
-                  // Requirement: Password field with toggle logic
                   _buildPasswordField(),
 
                   Align(
@@ -89,30 +75,46 @@ class _LoginscreenState extends State<Loginscreen> {
 
                   const SizedBox(height: 15),
 
+                  // LOGIN BUTTON
                   SizedBox(
                     width: double.infinity,
                     height: 55,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFFF4500),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFFFF5722), Color(0xFFFF1100)],
                         ),
-                        elevation: 5,
+                        boxShadow: [
+                          BoxShadow(color: Colors.red.withOpacity(0.3),
+                            blurRadius: 10,
+                            offset: const Offset(0, 5),
+                          ),
+                        ],
                       ),
-                      child: const Text(
-                        "LOGIN",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        ),
+                        child: const Text(
+                          "LOGIN",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
                   ),
 
-                  const SizedBox(height: 30),Row(
+                  const SizedBox(height: 30),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
@@ -145,17 +147,17 @@ class _LoginscreenState extends State<Loginscreen> {
     );
   }
 
-  // Updated password builder with obscureText toggle
+  // FIX: Added BorderRadius.circular(50) for perfect pill shape
   Widget _buildPasswordField() {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(50), 
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 15,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -187,16 +189,15 @@ class _LoginscreenState extends State<Loginscreen> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(50),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 15,
+            offset: const Offset(0, 8),
           ),
         ],
-      ),
-      child: TextField(
+      ),child: TextField(
         obscureText: isPassword,
         style: const TextStyle(color: Colors.black, fontSize: 16),
         decoration: InputDecoration(
@@ -208,30 +209,4 @@ class _LoginscreenState extends State<Loginscreen> {
       ),
     );
   }
-}
-
-class HeaderPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()
-      ..shader = const LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: [Color(0xFFFF5722), Color(0xFFFF1100)],
-      ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
-
-    Path path = Path();
-    path.lineTo(0, size.height);
-    path.quadraticBezierTo(
-      size.width * 0.1, size.height * 0.7, 
-      size.width, size.height * 0.7,
-    );
-    path.lineTo(size.width, 0);
-    path.close();
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
