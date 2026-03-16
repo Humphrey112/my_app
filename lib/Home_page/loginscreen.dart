@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/Home_page/new_category.dart';
 import 'package:my_app/Home_page/sign_up.dart';
 
 class Loginscreen extends StatefulWidget {
@@ -93,13 +94,24 @@ class _LoginscreenState extends State<Loginscreen> {
                         ],
                       ),
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+
+                           Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const NewsCategoryScreen (),
+                              ),
+                            );
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.transparent,
                           shadowColor: Colors.transparent,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50),
                           ),
+
+                          
+                          
                         ),
                         child: const Text(
                           "LOGIN",

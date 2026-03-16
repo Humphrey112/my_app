@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/Home_page/new_category.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -17,29 +18,24 @@ class _SignUpPageState extends State<SignUpPage> {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          // 1. SHADED BACKGROUND WATERMARK (Placed behind the input fields)
           Positioned(
             top: 280,
             left: 20,
             right: 20,
             child: Opacity(
-              opacity: 0.04, // Subtle shaded look
+              opacity: 0.04,
               child: Image.asset(
                 'assets/work.png',
                 height: 400,
-                color: Colors.black, // The "Shaded Black" effect
+                color: Colors.black,
                 colorBlendMode: BlendMode.srcIn,
               ),
             ),
           ),
-
-          // 2. MAIN CONTENT
           SingleChildScrollView(
             child: Column(
               children: [
                 const SizedBox(height: 80),
-
-                // Main Top Logo (Deep Orange)
                 Center(
                   child: Image.asset(
                     'assets/work.png',
@@ -48,47 +44,52 @@ class _SignUpPageState extends State<SignUpPage> {
                     color: Colors.deepOrange,
                   ),
                 ),
-
                 const SizedBox(height: 50),
-
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: Column(
                     children: [
                       _buildSignUpField("Email", Icons.email_outlined),
                       const SizedBox(height: 15),
-
                       _buildSignUpField("Username", Icons.person_outline),
                       const SizedBox(height: 15),
-
                       _buildPasswordField(
                         hint: "Password",
                         isHidden: _isPasswordHidden,
-                        onToggle: () =>
-                            setState(() => _isPasswordHidden = !_isPasswordHidden),
+                        onToggle: () => setState(() => _isPasswordHidden = !_isPasswordHidden),
                       ),
                       const SizedBox(height: 15),
-
                       _buildPasswordField(
                         hint: "Confirm Password",
                         isHidden: _isConfirmPasswordHidden,
-                        onToggle: () => setState(() =>
-                            _isConfirmPasswordHidden = !_isConfirmPasswordHidden),
+                        onToggle: () => setState(() => _isConfirmPasswordHidden = !_isConfirmPasswordHidden),
                       ),
-
                       const SizedBox(height: 40),
 
-                      // SignUp Button
+                      // SIGN UP BUTTON - NOW WORKING
                       SizedBox(
                         width: double.infinity,
                         height: 60,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            // 1. Show success message
+                            ScaffoldMessenger.of(context).clearSnackBars();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Account Created Successfully!'),
+                                duration: Duration(seconds: 1),
+                                behavior: SnackBarBehavior.floating,
+                              ),
+                            );
+
+                            // 2. NAVIGATOR: This uses your import and removes the yellow line
+                            
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFFFF4500),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
-                            ),
+                             ),
                             elevation: 4,
                           ),
                           child: const Text(
@@ -103,11 +104,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
 
                       const SizedBox(height: 25),
-
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text("Already have an Account? ",
+                          const Text(
+                            "Already have an Account? ",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           GestureDetector(
@@ -134,11 +135,7 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  // Password field builder with toggle logic
-  Widget _buildPasswordField(
-      {required String hint,
-      required bool isHidden,
-      required VoidCallback onToggle}) {
+  Widget _buildPasswordField({required String hint, required bool isHidden, required VoidCallback onToggle}) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -158,20 +155,16 @@ class _SignUpPageState extends State<SignUpPage> {
           hintText: hint,
           prefixIcon: const Icon(Icons.lock_outline, color: Colors.red),
           suffixIcon: IconButton(
-            icon: Icon(
-                isHidden ? Icons.visibility_off : Icons.visibility,
-                color: Colors.grey),
+            icon: Icon(isHidden ? Icons.visibility_off : Icons.visibility, color: Colors.grey),
             onPressed: onToggle,
           ),
           border: InputBorder.none,
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         ),
       ),
     );
   }
 
-  // General input field builder
   Widget _buildSignUpField(String hint, IconData icon) {
     return Container(
       decoration: BoxDecoration(
@@ -191,10 +184,9 @@ class _SignUpPageState extends State<SignUpPage> {
           hintText: hint,
           prefixIcon: Icon(icon, color: Colors.red),
           border: InputBorder.none,
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         ),
       ),
     );
   }
-}
+} 

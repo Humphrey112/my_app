@@ -48,18 +48,22 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
-# The following section is specific to Flutter packages.
 flutter:
-
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
 
-  # To add assets to your application, add an assets section, like this:
   assets:
-   - assets/work.png
+    - assets/work.png
+    - assets/art.png
+    - assets/economy.png
+    - assets/fun.png
+    - assets/general.png
+    - assets/health.png
+    - assets/music.png
+    - assets/science.png
+    - assets/sports.png
+    - assets/tech.png
+
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
