@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/Home_page/new_category.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});

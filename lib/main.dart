@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/Home_page/Onboarding.dart';
 import 'package:my_app/Home_page/loginscreen.dart';
 
 void main() {
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // This sets your custom LoginScreen as the first thing users see
-      home: const Loginscreen(), 
+      home: const OnboardingPage(), 
     );
   }
 }
