@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/Home_page/loginscreen.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -10,6 +11,21 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   bool _isPasswordHidden = true;
   bool _isConfirmPasswordHidden = true;
+
+  // 1. ALL CONTROLLERS INITIALIZED
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _usernameController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +40,7 @@ class _SignUpPageState extends State<SignUpPage> {
             child: Opacity(
               opacity: 0.04,
               child: Image.asset(
-                'assets/work.png',
+                'assets/work.png', // Verified in pubspec.yaml
                 height: 400,
                 color: Colors.black,
                 colorBlendMode: BlendMode.srcIn,
@@ -48,47 +64,65 @@ class _SignUpPageState extends State<SignUpPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: Column(
                     children: [
-                      _buildSignUpField("Email", Icons.email_outlined),
+                      // 2. PASSING CONTROLLERS CORRECTLY
+                      _buildSignUpField("Email", Icons.email_outlined, _emailController),
                       const SizedBox(height: 15),
-                      _buildSignUpField("Username", Icons.person_outline),
+                      _buildSignUpField("Username", Icons.person_outline, _usernameController),
                       const SizedBox(height: 15),
                       _buildPasswordField(
                         hint: "Password",
+                        controller: _passwordController,
                         isHidden: _isPasswordHidden,
                         onToggle: () => setState(() => _isPasswordHidden = !_isPasswordHidden),
                       ),
                       const SizedBox(height: 15),
                       _buildPasswordField(
                         hint: "Confirm Password",
+                        controller: _confirmPasswordController,
                         isHidden: _isConfirmPasswordHidden,
                         onToggle: () => setState(() => _isConfirmPasswordHidden = !_isConfirmPasswordHidden),
                       ),
                       const SizedBox(height: 40),
 
-                      // SIGN UP BUTTON - NOW WORKING
                       SizedBox(
                         width: double.infinity,
                         height: 60,
                         child: ElevatedButton(
                           onPressed: () {
-                            // 1. Show success message
-                            ScaffoldMessenger.of(context).clearSnackBars();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Account Created Successfully!'),
-                                duration: Duration(seconds: 1),
-                                behavior: SnackBarBehavior.floating,
-                              ),
-                            );
-
-                            // 2. NAVIGATOR: This uses your import and removes the yellow line
-                            
+                            // 3. VALIDATION LOGIC
+                            if (_emailController.text.isEmpty || 
+                                _usernameController.text.isEmpty || 
+                                _passwordController.text.isEmpty ||
+                                _confirmPasswordController.text.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('All fields are required!'),backgroundColor: Colors.red,
+                                ),
+                              );
+                            } 
+                            else if (_passwordController.text != _confirmPasswordController.text) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Passwords do not match!'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Account Created Successfully!'),
+                                  backgroundColor: Colors.green,
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+                              Navigator.pop(context , const Loginscreen());
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFFFF4500),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
-                             ),
+                            ),
                             elevation: 4,
                           ),
                           child: const Text(
@@ -134,7 +168,13 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Widget _buildPasswordField({required String hint, required bool isHidden, required VoidCallback onToggle}) {
+  // 4. HELPER WIDGETS UPDATED TO REQUIRE CONTROLLERS
+  Widget _buildPasswordField({
+    required String hint, 
+    required bool isHidden, 
+    required VoidCallback onToggle,
+    required TextEditingController controller,
+  }) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -148,12 +188,12 @@ class _SignUpPageState extends State<SignUpPage> {
         ],
       ),
       child: TextField(
+        controller: controller, // Linked controller to avoid 'undefined' error
         obscureText: isHidden,
         style: const TextStyle(color: Colors.black),
         decoration: InputDecoration(
           hintText: hint,
-          prefixIcon: const Icon(Icons.lock_outline, color: Colors.red),
-          suffixIcon: IconButton(
+          prefixIcon: const Icon(Icons.lock_outline, color: Colors.red),suffixIcon: IconButton(
             icon: Icon(isHidden ? Icons.visibility_off : Icons.visibility, color: Colors.grey),
             onPressed: onToggle,
           ),
@@ -164,7 +204,7 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Widget _buildSignUpField(String hint, IconData icon) {
+  Widget _buildSignUpField(String hint, IconData icon, TextEditingController controller) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -178,6 +218,7 @@ class _SignUpPageState extends State<SignUpPage> {
         ],
       ),
       child: TextField(
+        controller: controller, // Linked controller to avoid 'undefined' error
         style: const TextStyle(color: Colors.black),
         decoration: InputDecoration(
           hintText: hint,
@@ -188,4 +229,4 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
     );
   }
-} 
+}
