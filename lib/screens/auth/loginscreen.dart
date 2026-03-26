@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/Home_page/new_category.dart';
-import 'package:my_app/Home_page/sign_up.dart';
+
+import '../new_category.dart';
+import 'sign_up.dart';
 
 class Loginscreen extends StatefulWidget {
   const Loginscreen({super.key});
@@ -35,23 +36,26 @@ class _LoginscreenState extends State<Loginscreen> {
               width: double.infinity,
               height: 250,
               decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.deepOrange.shade900,
-                        Colors.deepOrange.shade400,
-                      ]),
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(120),
-                  )),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.deepOrange.shade900,
+                    Colors.deepOrange.shade400,
+                  ],
+                ),
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(120),
+                ),
+              ),
               child: Center(
-                  child: Image.asset(
-                'assets/work.png',
-                height: 120,
-                width: 120,
-                fit: BoxFit.contain,
-              )),
+                child: Image.asset(
+                  'assets/work.png',
+                  height: 120,
+                  width: 120,
+                  fit: BoxFit.contain,
+                ),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -70,7 +74,9 @@ class _LoginscreenState extends State<Loginscreen> {
                   const SizedBox(height: 20),
 
                   // 3. CONNECT PASSWORD CONTROLLER
-                  _buildPasswordField(controller: _passwordController), // Added this
+                  _buildPasswordField(
+                    controller: _passwordController,
+                  ), // Added this
 
                   Align(
                     alignment: Alignment.centerRight,
@@ -109,10 +115,13 @@ class _LoginscreenState extends State<Loginscreen> {
                       child: ElevatedButton(
                         onPressed: () {
                           // 4. THE VALIDATION CHECK
-                          if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+                          if (_emailController.text.isEmpty ||
+                              _passwordController.text.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content: Text('Please enter both Email and Password'),
+                                content: Text(
+                                  'Please enter both Email and Password',
+                                ),
                                 backgroundColor: Colors.red,
                               ),
                             );
@@ -121,7 +130,8 @@ class _LoginscreenState extends State<Loginscreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const NewsCategoryScreen(),
+                                builder: (context) =>
+                                    const NewsCategoryScreen(),
                               ),
                             );
                           }
@@ -157,7 +167,9 @@ class _LoginscreenState extends State<Loginscreen> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const SignUpPage()),
+                            MaterialPageRoute(
+                              builder: (context) => const SignUpPage(),
+                            ),
                           );
                         },
                         child: const Text(
@@ -211,16 +223,22 @@ class _LoginscreenState extends State<Loginscreen> {
             },
           ),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 18,
+            horizontal: 20,
+          ),
         ),
       ),
     );
   }
-  Widget _buildTextField(
-      {required String hint,
-      required IconData icon,
-      required bool isPassword,
-      required TextEditingController controller}) { // Added controller parameter
+
+  Widget _buildTextField({
+    required String hint,
+    required IconData icon,
+    required bool isPassword,
+    required TextEditingController controller,
+  }) {
+    // Added controller parameter
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -241,7 +259,10 @@ class _LoginscreenState extends State<Loginscreen> {
           hintText: hint,
           prefixIcon: Icon(icon, color: Colors.red),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 18,
+            horizontal: 20,
+          ),
         ),
       ),
     );

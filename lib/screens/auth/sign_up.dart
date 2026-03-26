@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/Home_page/loginscreen.dart';
+
+import 'loginscreen.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -16,7 +17,8 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   @override
   void dispose() {
@@ -65,22 +67,35 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: Column(
                     children: [
                       // 2. PASSING CONTROLLERS CORRECTLY
-                      _buildSignUpField("Email", Icons.email_outlined, _emailController),
+                      _buildSignUpField(
+                        "Email",
+                        Icons.email_outlined,
+                        _emailController,
+                      ),
                       const SizedBox(height: 15),
-                      _buildSignUpField("Username", Icons.person_outline, _usernameController),
+                      _buildSignUpField(
+                        "Username",
+                        Icons.person_outline,
+                        _usernameController,
+                      ),
                       const SizedBox(height: 15),
                       _buildPasswordField(
                         hint: "Password",
                         controller: _passwordController,
                         isHidden: _isPasswordHidden,
-                        onToggle: () => setState(() => _isPasswordHidden = !_isPasswordHidden),
+                        onToggle: () => setState(
+                          () => _isPasswordHidden = !_isPasswordHidden,
+                        ),
                       ),
                       const SizedBox(height: 15),
                       _buildPasswordField(
                         hint: "Confirm Password",
                         controller: _confirmPasswordController,
                         isHidden: _isConfirmPasswordHidden,
-                        onToggle: () => setState(() => _isConfirmPasswordHidden = !_isConfirmPasswordHidden),
+                        onToggle: () => setState(
+                          () => _isConfirmPasswordHidden =
+                              !_isConfirmPasswordHidden,
+                        ),
                       ),
                       const SizedBox(height: 40),
 
@@ -90,17 +105,18 @@ class _SignUpPageState extends State<SignUpPage> {
                         child: ElevatedButton(
                           onPressed: () {
                             // 3. VALIDATION LOGIC
-                            if (_emailController.text.isEmpty || 
-                                _usernameController.text.isEmpty || 
+                            if (_emailController.text.isEmpty ||
+                                _usernameController.text.isEmpty ||
                                 _passwordController.text.isEmpty ||
                                 _confirmPasswordController.text.isEmpty) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text('All fields are required!'),backgroundColor: Colors.red,
+                                  content: Text('All fields are required!'),
+                                  backgroundColor: Colors.red,
                                 ),
                               );
-                            } 
-                            else if (_passwordController.text != _confirmPasswordController.text) {
+                            } else if (_passwordController.text !=
+                                _confirmPasswordController.text) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text('Passwords do not match!'),
@@ -110,12 +126,14 @@ class _SignUpPageState extends State<SignUpPage> {
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text('Account Created Successfully!'),
+                                  content: Text(
+                                    'Account Created Successfully!',
+                                  ),
                                   backgroundColor: Colors.green,
                                   duration: Duration(seconds: 2),
                                 ),
                               );
-                              Navigator.pop(context , const Loginscreen());
+                              Navigator.pop(context, const Loginscreen());
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -170,8 +188,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
   // 4. HELPER WIDGETS UPDATED TO REQUIRE CONTROLLERS
   Widget _buildPasswordField({
-    required String hint, 
-    required bool isHidden, 
+    required String hint,
+    required bool isHidden,
     required VoidCallback onToggle,
     required TextEditingController controller,
   }) {
@@ -193,18 +211,29 @@ class _SignUpPageState extends State<SignUpPage> {
         style: const TextStyle(color: Colors.black),
         decoration: InputDecoration(
           hintText: hint,
-          prefixIcon: const Icon(Icons.lock_outline, color: Colors.red),suffixIcon: IconButton(
-            icon: Icon(isHidden ? Icons.visibility_off : Icons.visibility, color: Colors.grey),
+          prefixIcon: const Icon(Icons.lock_outline, color: Colors.red),
+          suffixIcon: IconButton(
+            icon: Icon(
+              isHidden ? Icons.visibility_off : Icons.visibility,
+              color: Colors.grey,
+            ),
             onPressed: onToggle,
           ),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 20,
+            horizontal: 20,
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildSignUpField(String hint, IconData icon, TextEditingController controller) {
+  Widget _buildSignUpField(
+    String hint,
+    IconData icon,
+    TextEditingController controller,
+  ) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -224,7 +253,10 @@ class _SignUpPageState extends State<SignUpPage> {
           hintText: hint,
           prefixIcon: Icon(icon, color: Colors.red),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 20,
+            horizontal: 20,
+          ),
         ),
       ),
     );
