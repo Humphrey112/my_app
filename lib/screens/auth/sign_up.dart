@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/services/auth_service.dart';
 
 import 'loginscreen.dart';
 
@@ -19,6 +20,8 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+
+  final _auth = AuthService();
 
   @override
   void dispose() {
@@ -104,6 +107,10 @@ class _SignUpPageState extends State<SignUpPage> {
                         height: 60,
                         child: ElevatedButton(
                           onPressed: () {
+                            _auth.signUp(
+                              _emailController.text,
+                              _passwordController.text,
+                            );
                             // 3. VALIDATION LOGIC
                             if (_emailController.text.isEmpty ||
                                 _usernameController.text.isEmpty ||

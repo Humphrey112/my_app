@@ -1,9 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' show User, FirebaseAuth;
 import 'package:get_storage/get_storage.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final box = GetStorage();
+  final getStorageInstance = GetStorage();
 
   // SIGN UP
   Future<User?> signUp(String email, String password) async {
@@ -38,7 +38,7 @@ class AuthService {
   // SAVE TOKEN
   Future<void> _saveToken() async {
     final token = await _auth.currentUser?.getIdToken();
-    box.write('token', token);
+    getStorageInstance.write('token', token);
   }
 
   // GET USER EMAIL
@@ -49,6 +49,6 @@ class AuthService {
   // LOGOUT
   Future<void> logout() async {
     await _auth.signOut();
-    box.remove('token');
+    getStorageInstance.remove('token');
   }
 }
