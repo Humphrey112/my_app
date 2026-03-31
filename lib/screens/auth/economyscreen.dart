@@ -53,7 +53,7 @@ class EconomyNewsPage extends StatelessWidget {
             Stack(
               children: [
                 Image.asset('assets/img1.jpeg', width: double.infinity, height: 260, fit: BoxFit.cover),
-                Container(height: 260, color: Colors.black.withOpacity(0.4)),
+                Container(height: 260, color: const Color.fromARGB(24, 33, 149, 243)),
                 const Positioned(
                   bottom: 20, left: 15, right: 15,
                   child: Text(

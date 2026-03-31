@@ -106,13 +106,6 @@ class _LoginscreenState extends State<Loginscreen> {
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Column(
                 children: [
-                  const SizedBox(height: 40),
-                  const Text(
-                    "Welcome Back",
-                    style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 30),
-                  
                   _buildInput(
                     label: "Email",
                     icon: Icons.email_outlined,

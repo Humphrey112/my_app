@@ -88,7 +88,7 @@ class _SignUpPageState extends State<SignUpPage> {
             right: 20,
             child: Opacity(
               opacity: 0.04,
-              child: Image.asset('assets/work.png', height: 400),
+              child: Image.asset('assets/work.png', height: 400, color: Colors.black,),
             ),
           ),
           SingleChildScrollView(
@@ -99,7 +99,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 Center(
                   child: Hero(
                     tag: 'logo',
-                    child: Image.asset('assets/work.png', height: 110, width: 110),
+                    child: Image.asset('assets/work.png', height: 110, width: 110, color: Colors.orange,),
                   ),
                 ),
                 const SizedBox(height: 40),
@@ -107,11 +107,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: Column(
                     children: [
-                      const Text(
-                        "Create Account",
-                        style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black87),
-                      ),
-                      const SizedBox(height: 30),
                       _buildField("Email Address", Icons.email_outlined, emailCtrl, TextInputType.emailAddress),
                       const SizedBox(height: 15),
                       _buildField("Full Name", Icons.person_outline, userCtrl, TextInputType.name),
