@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'loginscreen.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -10,23 +9,70 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  bool _isPasswordHidden = true;
-  bool _isConfirmPasswordHidden = true;
+  bool _isPassHidden = true;
+  bool _isConfirmHidden = true;
+  bool _isLoading = false; // Added for a better user experience
 
-  // 1. ALL CONTROLLERS INITIALIZED
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  final TextEditingController emailCtrl = TextEditingController();
+  final TextEditingController userCtrl = TextEditingController();
+  final TextEditingController passCtrl = TextEditingController();
+  final TextEditingController confirmPassCtrl = TextEditingController();
 
   @override
   void dispose() {
-    _emailController.dispose();
-    _usernameController.dispose();
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
+    emailCtrl.dispose();
+    userCtrl.dispose();
+    passCtrl.dispose();
+    confirmPassCtrl.dispose();
     super.dispose();
+  }
+
+  // Updated Registration Logic
+  void registerUser() async {
+    String email = emailCtrl.text.trim().toLowerCase(); // Convert to lowercase
+    String username = userCtrl.text.trim();
+    String pass = passCtrl.text.trim();
+    String confirmPass = confirmPassCtrl.text.trim();
+
+    // 1. Check if fields are empty
+    if (email.isEmpty || pass.isEmpty || username.isEmpty) {
+      _showMsg('Please fill all fields', Colors.red);
+      return;
+    }
+
+    // 2. Check password match
+    if (pass != confirmPass) {
+      _showMsg('Passwords do not match!', Colors.red);
+      return;
+    }
+
+    // 3. Simple email format check
+    if (!email.contains('@')) {
+      _showMsg('Please enter a valid email', Colors.red);
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    // Simulate a small delay for account creation
+    await Future.delayed(const Duration(seconds: 2));
+
+    // SAVE DATA TO THE GLOBAL STORE (Visible to Login Screen)
+    UserStore.savedEmail = email;
+    UserStore.savedPassword = pass;
+
+    if (!mounted) return;
+    
+    _showMsg('Account Created Successfully!', Colors.green);
+
+    // Go back to login screen
+    Navigator.pop(context);
+  }
+
+  void _showMsg(String msg, Color color) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(msg), backgroundColor: color, duration: const Duration(seconds: 2)),
+    );
   }
 
   @override
@@ -35,146 +81,82 @@ class _SignUpPageState extends State<SignUpPage> {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
+          // Background Watermark
           Positioned(
             top: 280,
             left: 20,
             right: 20,
             child: Opacity(
               opacity: 0.04,
-              child: Image.asset(
-                'assets/work.png', // Verified in pubspec.yaml
-                height: 400,
-                color: Colors.black,
-                colorBlendMode: BlendMode.srcIn,
-              ),
+              child: Image.asset('assets/work.png', height: 400),
             ),
           ),
           SingleChildScrollView(
             child: Column(
               children: [
-                const SizedBox(height: 80),
+                const SizedBox(height: 70),
+                // Hero Logo
                 Center(
-                  child: Image.asset(
-                    'assets/work.png',
-                    height: 120,
-                    width: 120,
-                    color: Colors.deepOrange,
+                  child: Hero(
+                    tag: 'logo',
+                    child: Image.asset('assets/work.png', height: 110, width: 110),
                   ),
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 40),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: Column(
                     children: [
-                      // 2. PASSING CONTROLLERS CORRECTLY
-                      _buildSignUpField(
-                        "Email",
-                        Icons.email_outlined,
-                        _emailController,
+                      const Text(
+                        "Create Account",
+                        style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black87),
                       ),
+                      const SizedBox(height: 30),
+                      _buildField("Email Address", Icons.email_outlined, emailCtrl, TextInputType.emailAddress),
                       const SizedBox(height: 15),
-                      _buildSignUpField(
-                        "Username",
-                        Icons.person_outline,
-                        _usernameController,
-                      ),
+                      _buildField("Full Name", Icons.person_outline, userCtrl, TextInputType.name),
                       const SizedBox(height: 15),
-                      _buildPasswordField(
-                        hint: "Password",
-                        controller: _passwordController,
-                        isHidden: _isPasswordHidden,
-                        onToggle: () => setState(
-                          () => _isPasswordHidden = !_isPasswordHidden,
-                        ),
-                      ),
+                      _buildPassField("Password", _isPassHidden, passCtrl, () {
+                        setState(() => _isPassHidden = !_isPassHidden);
+                      }),
                       const SizedBox(height: 15),
-                      _buildPasswordField(
-                        hint: "Confirm Password",
-                        controller: _confirmPasswordController,
-                        isHidden: _isConfirmPasswordHidden,
-                        onToggle: () => setState(
-                          () => _isConfirmPasswordHidden =
-                              !_isConfirmPasswordHidden,
-                        ),
-                      ),
+                      _buildPassField("Confirm Password", _isConfirmHidden, confirmPassCtrl, () {
+                        setState(() => _isConfirmHidden = !_isConfirmHidden);
+                      }),
                       const SizedBox(height: 40),
-
+                      
+                      // Submit Button with Loading State
                       SizedBox(
                         width: double.infinity,
                         height: 60,
                         child: ElevatedButton(
-                          onPressed: () {
-                            // 3. VALIDATION LOGIC
-                            if (_emailController.text.isEmpty ||
-                                _usernameController.text.isEmpty ||
-                                _passwordController.text.isEmpty ||
-                                _confirmPasswordController.text.isEmpty) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('All fields are required!'),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
-                            } else if (_passwordController.text !=
-                                _confirmPasswordController.text) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Passwords do not match!'),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    'Account Created Successfully!',
-                                  ),
-                                  backgroundColor: Colors.green,
-                                  duration: Duration(seconds: 2),
-                                ),
-                              );
-                              Navigator.pop(context, const Loginscreen());
-                            }
-                          },
+                          onPressed: _isLoading ? null : registerUser,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFFFF4500),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            elevation: 4,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                            elevation: 5,
                           ),
-                          child: const Text(
-                            "SignUp",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          child: _isLoading 
+                            ? const CircularProgressIndicator(color: Colors.white)
+                            : const Text("SIGN UP", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
                         ),
                       ),
-
+                      
                       const SizedBox(height: 25),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
-                            "Already have an Account? ",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
+                          const Text("Already have an account? "),
                           GestureDetector(
                             onTap: () => Navigator.pop(context),
                             child: const Text(
-                              "Login",
-                              style: TextStyle(
-                                color: Color(0xFFFF4500),
-                                fontWeight: FontWeight.bold,
-                              ),
+                              "Login", 
+                              style: TextStyle(color: Color(0xFFFF4500), fontWeight: FontWeight.bold),
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 30),
                     ],
                   ),
                 ),
@@ -186,77 +168,46 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  // 4. HELPER WIDGETS UPDATED TO REQUIRE CONTROLLERS
-  Widget _buildPasswordField({
-    required String hint,
-    required bool isHidden,
-    required VoidCallback onToggle,
-    required TextEditingController controller,
-  }) {
+  // UI Helpers
+  Widget _buildField(String hint, IconData icon, TextEditingController ctrl, TextInputType type) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(30),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 5))],
       ),
       child: TextField(
-        controller: controller, // Linked controller to avoid 'undefined' error
-        obscureText: isHidden,
-        style: const TextStyle(color: Colors.black),
+        controller: ctrl,
+        keyboardType: type,
         decoration: InputDecoration(
           hintText: hint,
-          prefixIcon: const Icon(Icons.lock_outline, color: Colors.red),
-          suffixIcon: IconButton(
-            icon: Icon(
-              isHidden ? Icons.visibility_off : Icons.visibility,
-              color: Colors.grey,
-            ),
-            onPressed: onToggle,
-          ),
+          prefixIcon: Icon(icon, color: Colors.deepOrange),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(
-            vertical: 20,
-            horizontal: 20,
-          ),
+          contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         ),
       ),
     );
   }
 
-  Widget _buildSignUpField(
-    String hint,
-    IconData icon,
-    TextEditingController controller,
-  ) {
+  Widget _buildPassField(String hint, bool isHidden, TextEditingController ctrl, VoidCallback toggle) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(30),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 5))],
       ),
       child: TextField(
-        controller: controller, // Linked controller to avoid 'undefined' error
-        style: const TextStyle(color: Colors.black),
+        controller: ctrl,
+        obscureText: isHidden,
         decoration: InputDecoration(
           hintText: hint,
-          prefixIcon: Icon(icon, color: Colors.red),
-          border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(
-            vertical: 20,
-            horizontal: 20,
+          prefixIcon: const Icon(Icons.lock_outline, color: Colors.deepOrange),
+          suffixIcon: IconButton(
+            icon: Icon(isHidden ? Icons.visibility_off : Icons.visibility, color: Colors.grey),
+            onPressed: toggle,
           ),
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         ),
       ),
     );

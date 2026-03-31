@@ -17,23 +17,26 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
       case TargetPlatform.windows:
-        return windows;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -46,29 +49,20 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAr_KR2KSMAmJvKfKmynm2-OD6RVjZkPao',
-    appId: '1:688940067190:web:a426585cd0d5c6f2d8b257',
-    messagingSenderId: '688940067190',
-    projectId: 'news-1dee4',
-    authDomain: 'news-1dee4.firebaseapp.com',
-    storageBucket: 'news-1dee4.firebasestorage.app',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCmuB2yrnLmSqCNKPOnRQQn3E5i2FcJ5yc',
-    appId: '1:688940067190:android:683861343d1b03e3d8b257',
-    messagingSenderId: '688940067190',
-    projectId: 'news-1dee4',
-    storageBucket: 'news-1dee4.firebasestorage.app',
+    apiKey: 'AIzaSyAA1JJtg_NQqmvzinCa4USd8uOH12SO8XA',
+    appId: '1:669833012127:android:c0c875e72b38fd46cd53aa',
+    messagingSenderId: '669833012127',
+    projectId: 'my-app-92c5a',
+    storageBucket: 'my-app-92c5a.firebasestorage.app',
   );
 
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyAr_KR2KSMAmJvKfKmynm2-OD6RVjZkPao',
-    appId: '1:688940067190:web:af237dca76c926ebd8b257',
-    messagingSenderId: '688940067190',
-    projectId: 'news-1dee4',
-    authDomain: 'news-1dee4.firebaseapp.com',
-    storageBucket: 'news-1dee4.firebasestorage.app',
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyBtvMziPccGRF_TaDzslkKlEQbLLoAZ0Ws',
+    appId: '1:669833012127:ios:3fd551cfec9a1035cd53aa',
+    messagingSenderId: '669833012127',
+    projectId: 'my-app-92c5a',
+    storageBucket: 'my-app-92c5a.firebasestorage.app',
+    iosBundleId: 'com.example.myApp',
   );
 }

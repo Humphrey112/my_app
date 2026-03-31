@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'auth/loginscreen.dart'; 
+// Make sure you import this
+import 'auth/economyscreen.dart';
 
 class NewsCategoryScreen extends StatefulWidget {
   const NewsCategoryScreen({super.key});
@@ -8,40 +11,38 @@ class NewsCategoryScreen extends StatefulWidget {
 }
 
 class _NewsCategoryScreenState extends State<NewsCategoryScreen> {
-  // 1. THIS TRIGGERS THE MESSAGE AUTOMATICALLY ON LOGIN
+  
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Login Successful!'),
-          duration: Duration(seconds: 1), // Disappears in 1 second
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: Colors.green,
+          content: Text('Login Successful!', style: TextStyle(fontSize: 16)),
+          backgroundColor: Color(0xFF1B8E3D), 
+          duration: Duration(seconds: 2),
         ),
       );
     });
   }
 
-  static final List<CategoryItem> categories = [
-    CategoryItem(title: 'Tech', image: 'assets/tech.png', color: Colors.black87),
-    CategoryItem(title: 'Economy', image: 'assets/economy.png', color: Colors.brown),
-    CategoryItem(title: 'Sport', image: 'assets/sports.png', color: Colors.amber),
-    CategoryItem(title: 'Health', image: 'assets/health.png', color: Colors.teal),
-    CategoryItem(title: 'Fun', image: 'assets/fun.png', color: Colors.grey),
-    CategoryItem(title: 'Science', image: 'assets/science.png', color: Colors.blue),
-    CategoryItem(title: 'General', image: 'assets/general.png', color: Colors.green),
-    CategoryItem(title: 'Music', image: 'assets/music.png', color: Colors.orange),
-    CategoryItem(title: 'Art', image: 'assets/art.png', color: Colors.pink),
+  final List<Map<String, String>> categories = [
+    {'title': 'Tech', 'image': 'assets/tech.png'},
+    {'title': 'Economy', 'image': 'assets/economy.png'},
+    {'title': 'Sport', 'image': 'assets/sports.png'},
+    {'title': 'Health', 'image': 'assets/health.png'},
+    {'title': 'Fun', 'image': 'assets/fun.png'},
+    {'title': 'Science', 'image': 'assets/science.png'},
+    {'title': 'General', 'image': 'assets/general.png'},
+    {'title': 'Music', 'image': 'assets/music.png'},
+    {'title': 'Art', 'image': 'assets/art.png'},
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFFDF7F9),
       body: SafeArea(
-        // Use a Column to separate the scrollable part from the bottom button
         child: Column(
           children: [
             Padding(
@@ -53,117 +54,93 @@ class _NewsCategoryScreenState extends State<NewsCategoryScreen> {
                     'News Category',
                     style: TextStyle(
                       color: Colors.red,
-                      fontSize: 28,
+                      fontSize: 26,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Row(
                     children: [
-                      const IconButton(
-                        icon: Icon(Icons.person_outline),
-                        onPressed: null,
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.logout),
-                        onPressed: () => Navigator.pop(context),
+                      Icon(Icons.person, color: Colors.grey[600]),
+                      const SizedBox(width: 15),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => const Loginscreen()),
+                          );
+                        },
+                        child: Icon(Icons.logout, color: Colors.grey[600]),
                       ),
                     ],
                   ),
                 ],
               ),
             ),
-            
-            // This Expanded makes the grid scrollable while keeping the button fixed
+
             Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
-                    childAspectRatio: 0.9, 
-                  ),
-                  itemCount: categories.length,
-                  itemBuilder: (context, index) {
-                    return CategoryCard(
-                      category: categories[index],
-                      onTap: () => _navigateToCategory(categories[index].title),
-                    );
-                  },
+              child: GridView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                  childAspectRatio: 0.65, 
                 ),
+                itemCount: categories.length,
+                itemBuilder: (context, index) {
+                  final String title = categories[index]['title'] ?? 'No Title';
+                  final String image = categories[index]['image'] ?? '';
+                  
+                  return categoryBox(title, image);
+                },
               ),
             ),
-
-            // 2. FIXED GREEN BUTTON AT THE VERY BOTTOM
-        
           ],
         ),
       ),
     );
   }
 
-  void _navigateToCategory(String categoryTitle) {
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('$categoryTitle category selected'),
-        duration: const Duration(milliseconds: 800),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
-  }
-}
-
-class CategoryItem {
-  final String title;
-  final String image;
-  final Color color;
-  CategoryItem({required this.title, required this.image, required this.color});
-}
-
-class CategoryCard extends StatelessWidget {
-  final CategoryItem category;
-  final VoidCallback onTap;
-
-  const CategoryCard({
-    super.key,
-    required this.category,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  Widget categoryBox(String title, String imagePath) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        if (title == 'Economy') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const EconomyNewsPage()),
+          );
+        } else {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('$title category selected'),
+              duration: const Duration(milliseconds: 700),
+            ),
+          );
+        }
+      },
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
           image: DecorationImage(
-            image: AssetImage(category.image),
+            image: AssetImage(imagePath),
             fit: BoxFit.cover,
+            onError: (exception, stackTrace) => const Icon(Icons.error),
           ),
         ),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            color: Colors.black.withOpacity(0.3), // Darker overlay
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.black.withOpacity(0.25),
           ),
-          // 3. CENTERED AND EXTRA BOLD TEXT
-          child: Center(
-            child: Text(
-              category.title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w900, // Makes it very bold
-                shadows: [
-                  Shadow(blurRadius: 10, color: Colors.black, offset: Offset(2, 2)),
-                ],
-              ),
+          alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.all(8),
+          child: Text(
+            title,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 22,
+              fontWeight: FontWeight.w900,
             ),
           ),
         ),
