@@ -19,16 +19,20 @@ class EconomyNewsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // I have added all 10 images here so they all show up in your list
     final List<NewsArticle> articles = [
-      NewsArticle(imageUrl: 'assets/img1.png', title: "Oltre 25mila imprese, una crescita del 185% in meno di dieci anni...", timestamp: "2026-02-15T17:33:09Z"),
-      NewsArticle(imageUrl: 'assets/img2.png', title: "In this week's episode of the Equity podcast, Glean CEO Arvind Jain...", timestamp: "2026-02-15T17:31:36Z"),
-      NewsArticle(imageUrl: 'assets/img3.png', title: "Bring fast, reliable Wi-Fi 7 to your business or connected home...", timestamp: "2026-02-15T17:30:24Z"),
-      NewsArticle(imageUrl: 'assets/img4.png', title: "SAG-AFTRA is not real happy about this development from a newer...", timestamp: "2026-02-15T17:28:10Z"),
-      NewsArticle(imageUrl: 'assets/img5.png', title: "New economic shifts in the tech sector are driving massive changes...", timestamp: "2026-02-15T17:25:00Z"),
-      NewsArticle(imageUrl: 'assets/img6.png', title: "How startup culture is surviving the latest interest rate hikes...", timestamp: "2026-02-15T17:20:00Z"),
-      NewsArticle(imageUrl: 'assets/img7.png', title: "The future of remote work and its impact on commercial real estate...", timestamp: "2026-02-15T17:15:00Z"),
-      NewsArticle(imageUrl: 'assets/img8.png', title: "Global markets react to the latest trade agreements signed today...", timestamp: "2026-02-15T17:10:00Z"),
-      NewsArticle(imageUrl: 'assets/img9.png', title: "Venture capital trends to watch for in the upcoming fiscal quarter...", timestamp: "2026-02-15T17:05:00Z"),
-      NewsArticle(imageUrl: 'assets/img10.png', title: "Sustainability in manufacturing: Why green energy is the new gold...", timestamp: "2026-02-15T17:00:00Z"),
+      NewsArticle(imageUrl: 'assets/img1.jpeg', title: "Oltre 25mila imprese, una crescita del 185% in meno di dieci anni...", timestamp: "2026-02-15T17:33:09Z"),
+      NewsArticle(imageUrl: 'assets/img2.jpeg', title: "In this week's episode of the Equity podcast, Glean CEO Arvind Jain...", timestamp: "2026-02-15T17:31:36Z"),
+      NewsArticle(imageUrl: 'assets/img3.jpeg', title: "Bring fast, reliable Wi-Fi 7 to your business or connected home...", timestamp: "2026-02-15T17:30:24Z"),
+      NewsArticle(imageUrl: 'assets/img4.jpeg', title: "SAG-AFTRA is not real happy about this development from a newer...", timestamp: "2026-02-15T17:28:10Z"),
+      NewsArticle(imageUrl: 'assets/img5.jpeg', title: "New economic shifts in the tech sector are driving massive changes...", timestamp: "2026-02-15T17:25:00Z"),
+      NewsArticle(imageUrl: 'assets/img6.jpeg', title: "How startup culture is surviving the latest interest rate hikes...", timestamp: "2026-02-15T17:20:00Z"),
+      NewsArticle(imageUrl: 'assets/img7.jpeg', title: "The future of remote work and its impact on commercial real estate...", timestamp: "2026-02-15T17:15:00Z"),
+      NewsArticle(imageUrl: 'assets/img8.jpeg', title: "Global markets react to the latest trade agreements signed today...", timestamp: "2026-02-15T17:10:00Z"),
+      NewsArticle(imageUrl: 'assets/img9.jpeg', title: "Venture capital trends to watch for in the upcoming fiscal quarter...", timestamp: "2026-02-15T17:05:00Z"),
+      NewsArticle(imageUrl: 'assets/img10.jpeg', title: "Semi-homemade chocolate cupcake made with cake mix,instant pudding,water,and canned...", timestamp: "2026-02-15T17:00:00Z"),
+      NewsArticle(imageUrl: 'assets/img11.jpeg', title: "The CW has officially closedthe case on Good Cap/Bad Cap after one season despite recent talks of a pot...", timestamp: "2026-02-15T17:00:00Z"),
+      NewsArticle(imageUrl: 'assets/img12.jpeg', title: "Sustainability in manufacturing: Why green energy is the new gold...", timestamp: "2026-02-15T17:00:00Z"),
+      NewsArticle(imageUrl: 'assets/img13.jpeg', title: "I always wanted to do something like this for the community and for the legacy of italian food. i think this a...", timestamp: "2026-02-15T17:00:00Z"),
+      
     ];
 
     return Scaffold(

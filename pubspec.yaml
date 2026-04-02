@@ -66,8 +66,20 @@ flutter:
     - assets/music.png
     - assets/science.png
     - assets/sports.png
-    - assets/tech.png
-
+    - assets/tech.PNG
+    - assets/img1.jpeg
+    - assets/img2.jpeg
+    - assets/img3.jpeg
+    - assets/img4.jpeg
+    - assets/img5.jpeg
+    - assets/img6.jpeg
+    - assets/img7.jpeg
+    - assets/img8.jpeg
+    - assets/img9.jpeg
+    - assets/img10.jpeg 
+    - assets/img11.jpeg 
+    - assets/img12.jpeg 
+    - assets/img13.jpeg 
 
   #   - images/a_dot_ham.jpeg
 
