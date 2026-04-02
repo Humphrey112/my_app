@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+void showSnack(BuildContext context, String msg) {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+}
+
+/*
 class FloatingSnackBar extends StatefulWidget {
   final String message;
   final Duration duration;
@@ -12,7 +17,7 @@ class FloatingSnackBar extends StatefulWidget {
   final Color? iconColor;
 
   const FloatingSnackBar({
-    Key? key,
+    super.key,
     required this.message,
     this.duration = const Duration(seconds: 3),
     this.backgroundColor = const Color(0xFF323232),
@@ -22,7 +27,7 @@ class FloatingSnackBar extends StatefulWidget {
     this.onDismiss,
     this.icon,
     this.iconColor,
-  }) : super(key: key);
+  });
 
   static void show(
     BuildContext context, {
@@ -157,3 +162,4 @@ class _FloatingSnackBarState extends State<FloatingSnackBar>
     );
   }
 }
+*/

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/services/auth_service.dart';
+import 'package:my_app/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'loginscreen.dart';
 
@@ -20,8 +21,6 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-
-  final _auth = AuthService();
 
   @override
   void dispose() {
@@ -105,62 +104,93 @@ class _SignUpPageState extends State<SignUpPage> {
                       SizedBox(
                         width: double.infinity,
                         height: 60,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            _auth.signUp(
-                              _emailController.text,
-                              _passwordController.text,
-                            );
-                            // 3. VALIDATION LOGIC
-                            if (_emailController.text.isEmpty ||
-                                _usernameController.text.isEmpty ||
-                                _passwordController.text.isEmpty ||
-                                _confirmPasswordController.text.isEmpty) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('All fields are required!'),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
-                            } else if (_passwordController.text !=
-                                _confirmPasswordController.text) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Passwords do not match!'),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    'Account Created Successfully!',
-                                  ),
-                                  backgroundColor: Colors.green,
-                                  duration: Duration(seconds: 2),
-                                ),
-                              );
-                              Navigator.pop(context, const Loginscreen());
-                            }
+                        child: Consumer<NewsAuthProvider>(
+                          builder: (context, auth, child) {
+                            return auth.isLoading
+                                ? const Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : ElevatedButton(
+                                    onPressed: () async {
+                                      final email = _emailController.text
+                                          .trim();
+                                      final username = _usernameController.text
+                                          .trim();
+                                      final password = _passwordController.text
+                                          .trim();
+                                      final confirmPassword =
+                                          _confirmPasswordController.text
+                                              .trim();
+
+                                      // ✅ VALIDATION
+                                      if (email.isEmpty ||
+                                          username.isEmpty ||
+                                          password.isEmpty ||
+                                          confirmPassword.isEmpty) {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              'All fields are required!',
+                                            ),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
+                                        return;
+                                      }
+
+                                      if (password != confirmPassword) {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              'Passwords do not match!',
+                                            ),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
+                                        return;
+                                      }
+
+                                      // ✅ CALL PROVIDER
+                                      await auth.signUp(
+                                        context: context,
+                                        email: email,
+                                        password: password,
+                                        name: username,
+                                      );
+
+                                      // ✅ NAVIGATION
+                                      if (auth.userEmail != null) {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (_) => const Loginscreen(),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xFFFF4500),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                      elevation: 4,
+                                    ),
+                                    child: const Text(
+                                      "SignUp",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  );
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFFF4500),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            elevation: 4,
-                          ),
-                          child: const Text(
-                            "SignUp",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
                         ),
                       ),
-
                       const SizedBox(height: 25),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

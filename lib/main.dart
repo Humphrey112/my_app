@@ -10,7 +10,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(
-    ChangeNotifierProvider(create: (_) => AuthProvider(), child: const MyApp()),
+    ChangeNotifierProvider(
+      create: (_) => NewsAuthProvider(),
+      child: const MyApp(),
+    ),
   );
 }
 
