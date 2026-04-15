@@ -91,17 +91,22 @@ class _LoginscreenState extends State<Loginscreen> {
                     Colors.deepOrange.shade400,
                   ],
                 ),
-                borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(100)),
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(100),
+                ),
               ),
               child: Center(
                 child: Hero(
                   tag: 'logo',
                   child: Image.asset(
-                    'assets/work.png', 
-                    height: 120, 
+                    'assets/work.png',
+                    height: 120,
                     width: 120,
-                    errorBuilder: (context, error, stackTrace) => 
-                      const Icon(Icons.lock_person, size: 80, color: Colors.white),
+                    errorBuilder: (context, error, stackTrace) => const Icon(
+                      Icons.lock_person,
+                      size: 80,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -118,9 +123,9 @@ class _LoginscreenState extends State<Loginscreen> {
                     type: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 20),
-                  
+
                   _buildPassInput(ctrl: passwordController),
-                  
+
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
@@ -129,7 +134,10 @@ class _LoginscreenState extends State<Loginscreen> {
                       },
                       child: const Text(
                         "Forgot Password?",
-                        style: TextStyle(color: Color(0xFFFF4500), fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          color: Color(0xFFFF4500),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
@@ -142,13 +150,15 @@ class _LoginscreenState extends State<Loginscreen> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
-                        gradient: const LinearGradient(colors: [Color(0xFFFF5722), Color(0xFFFF1100)]),
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFFFF5722), Color(0xFFFF1100)],
+                        ),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.deepOrange.withOpacity(0.3),
                             blurRadius: 10,
                             offset: const Offset(0, 5),
-                          )
+                          ),
                         ],
                       ),
                       child: ElevatedButton(
@@ -156,11 +166,27 @@ class _LoginscreenState extends State<Loginscreen> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.transparent,
                           shadowColor: Colors.transparent,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
                         ),
-                        child: _isLoading 
-                          ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                          : const Text("LOGIN", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                        child: _isLoading
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Text(
+                                "LOGIN",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                       ),
                     ),
                   ),
@@ -169,14 +195,25 @@ class _LoginscreenState extends State<Loginscreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text("Don't have an Account? ", style: TextStyle(color: Colors.grey)),
+                      const Text(
+                        "Don't have an Account? ",
+                        style: TextStyle(color: Colors.grey),
+                      ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const SignUpPage()));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SignUpPage(),
+                            ),
+                          );
                         },
                         child: const Text(
-                          "Register", 
-                          style: TextStyle(color: Color(0xFFFF4500), fontWeight: FontWeight.bold),
+                          "Register",
+                          style: TextStyle(
+                            color: Color(0xFFFF4500),
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
@@ -192,12 +229,23 @@ class _LoginscreenState extends State<Loginscreen> {
   }
 
   // --- UI Helpers (Keep these outside build to keep code clean) ---
-  Widget _buildInput({required String label, required IconData icon, required TextEditingController ctrl, TextInputType? type}) {
+  Widget _buildInput({
+    required String label,
+    required IconData icon,
+    required TextEditingController ctrl,
+    TextInputType? type,
+  }) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(50),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 5))],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
       ),
       child: TextField(
         controller: ctrl,
@@ -206,7 +254,10 @@ class _LoginscreenState extends State<Loginscreen> {
           hintText: label,
           prefixIcon: Icon(icon, color: Colors.deepOrange),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 18,
+            horizontal: 20,
+          ),
         ),
       ),
     );
@@ -217,7 +268,13 @@ class _LoginscreenState extends State<Loginscreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(50),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 5))],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
       ),
       child: TextField(
         controller: ctrl,
@@ -226,11 +283,18 @@ class _LoginscreenState extends State<Loginscreen> {
           hintText: "Password",
           prefixIcon: const Icon(Icons.lock_outline, color: Colors.deepOrange),
           suffixIcon: IconButton(
-            icon: Icon(_isPasswordHidden ? Icons.visibility_off : Icons.visibility, color: Colors.grey),
-            onPressed: () => setState(() => _isPasswordHidden = !_isPasswordHidden),
+            icon: Icon(
+              _isPasswordHidden ? Icons.visibility_off : Icons.visibility,
+              color: Colors.grey,
+            ),
+            onPressed: () =>
+                setState(() => _isPasswordHidden = !_isPasswordHidden),
           ),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 18,
+            horizontal: 20,
+          ),
         ),
       ),
     );

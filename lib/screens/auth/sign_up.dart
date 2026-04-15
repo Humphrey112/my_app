@@ -30,38 +30,6 @@ class _SignUpPageState extends State<SignUpPage> {
     super.dispose();
   }
 
-  // Updated Registration Logic
-  void validateUser() async {
-    final email = emailCtrl.text.trim();
-    final username = nameCtrl.text.trim();
-    final password = passwordCtrl.text.trim();
-    final confirmPassword = confirmPassCtrl.text.trim();
-
-    // validation
-    if (email.isEmpty ||
-        username.isEmpty ||
-        password.isEmpty ||
-        confirmPassword.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('All fields are required!'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
-
-    if (password != confirmPassword) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Passwords do not match!'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
-  }
-
   void _showMsg(String msg, Color color) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -74,6 +42,38 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    final email = emailCtrl.text.trim();
+    final username = nameCtrl.text.trim();
+    final password = passwordCtrl.text.trim();
+    final confirmPassword = confirmPassCtrl.text.trim();
+
+    // Updated Registration Logic
+    void validateUser() async {
+      // validation
+      if (email.isEmpty ||
+          username.isEmpty ||
+          password.isEmpty ||
+          confirmPassword.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('All fields are required!'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      if (password != confirmPassword) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Passwords do not match!'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
