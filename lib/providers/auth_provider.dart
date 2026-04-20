@@ -38,7 +38,7 @@ Future<bool> signUp({
     _userName = name;
     getStorageInstance.write('user_name', name);
 
-    // FIX: Calling the helper method defined below
+    
     await _saveToken();
 
     showSnack(context, "Account created!!!");
@@ -69,10 +69,9 @@ Future<bool> signIn({
       getStorageInstance.write('user_name', _userName);
     }
     
-    // FIX: Calling the helper method defined below
+    
     await _saveToken();
 
-    showSnack(context, "Welcome back!");
     return true;
   } catch (e) {
     showSnack(context, e.toString());
@@ -82,7 +81,6 @@ Future<bool> signIn({
   }
 }
 
-// --- THE FIX: ADD THIS METHOD ---
 Future<void> _saveToken() async {
   // Get the current user from Firebase
   final user = _auth.currentUser;

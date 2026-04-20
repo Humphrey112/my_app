@@ -1,31 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/providers/news_provider.dart';
 import 'package:provider/provider.dart';
+import '../providers/news_provider.dart';
 
-class NewsArticle {
-  final String imageUrl;
-  final String title;
-  final String timestamp;
-
-  NewsArticle({
-    required this.imageUrl,
-    required this.title,
-    required this.timestamp,
-  });
-}
-
-class EconomyNewsPage extends StatefulWidget {
-  const EconomyNewsPage({super.key});
+class TechNewsPage extends StatefulWidget {
+  const TechNewsPage({super.key});
 
   @override
-  State<EconomyNewsPage> createState() => _EconomyNewsPageState();
+  State<TechNewsPage> createState() => _TechNewsPageState();
 }
 
-class _EconomyNewsPageState extends State<EconomyNewsPage> {
+class _TechNewsPageState extends State<TechNewsPage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<NewsProvider>(context, listen: false).fetchEconomyNews();
+    // Fetch news when the screen loads
+    Provider.of<NewsProvider>(context, listen: false).fetchTechNews();
   }
 
   @override
@@ -37,7 +26,7 @@ class _EconomyNewsPageState extends State<EconomyNewsPage> {
         elevation: 0,
         centerTitle: true,
         title: const Text(
-          "Economy News",
+          "Tech News",
           style: TextStyle(
             color: Colors.red,
             fontSize: 22,
@@ -52,16 +41,17 @@ class _EconomyNewsPageState extends State<EconomyNewsPage> {
       body: Consumer<NewsProvider>(
         builder: (context, provider, widget) {
           if (provider.stillFetching) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
+
           return SingleChildScrollView(
             child: Column(
               children: [
-                // Header Image
+                // Header Banner Image
                 Stack(
                   children: [
                     Image.asset(
-                      'assets/economy.png',
+                      'assets/tech.png',
                       width: double.infinity,
                       height: 260,
                       fit: BoxFit.cover,
@@ -75,7 +65,7 @@ class _EconomyNewsPageState extends State<EconomyNewsPage> {
                       left: 15,
                       right: 15,
                       child: Text(
-                        "Latest Economy & Finance News around the world",
+                        "Latest Technology & Innovation News",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 22,
@@ -86,26 +76,27 @@ class _EconomyNewsPageState extends State<EconomyNewsPage> {
                   ],
                 ),
                 const SizedBox(height: 10),
-                // The News List
+                
+                // Tech News List
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: provider.economyNewsList.length,
+                  itemCount: provider.techNewsList.length,
                   itemBuilder: (context, index) {
-                    final article = provider.economyNewsList[index];
-                    
-                    // Handle potential URL issues
+                    final article = provider.techNewsList[index];
+
+                    // URL Sanitization
                     String imageUrl = article.urlToImage ?? "";
                     if (imageUrl.startsWith("//")) {
                       imageUrl = "https:$imageUrl";
                     }
-                    final bool hasValidUrl = imageUrl.isNotEmpty && imageUrl.startsWith('http');
+                    final bool hasValidUrl =
+                        imageUrl.isNotEmpty && imageUrl.startsWith('http');
 
-                    // InkWell makes the item "Pressable"
                     return InkWell(
                       onTap: () {
-                        // This is where the code goes when you press it
-                        print("You pressed: ${article.title}");
+                        // Navigation to detail could go here
+                        debugPrint("Opening: ${article.title}");
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
@@ -123,17 +114,16 @@ class _EconomyNewsPageState extends State<EconomyNewsPage> {
                                       width: 110,
                                       height: 110,
                                       fit: BoxFit.cover,
-                                      errorBuilder:
-                                          (context, error, stackTrace) =>
-                                              Image.asset(
-                                        'assets/economy.png',
+                                      errorBuilder: (context, error, stackTrace) =>
+                                          Image.asset(
+                                        'assets/tech.png',
                                         width: 110,
                                         height: 110,
                                         fit: BoxFit.cover,
                                       ),
                                     )
                                   : Image.asset(
-                                      'assets/economy.png',
+                                      'assets/tech.png',
                                       width: 110,
                                       height: 110,
                                       fit: BoxFit.cover,
@@ -148,7 +138,10 @@ class _EconomyNewsPageState extends State<EconomyNewsPage> {
                                     article.title ?? '',
                                     maxLines: 3,
                                     overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(fontSize: 15),
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
                                   const SizedBox(height: 8),
                                   Row(
@@ -161,13 +154,11 @@ class _EconomyNewsPageState extends State<EconomyNewsPage> {
                                           vertical: 6,
                                         ),
                                         decoration: BoxDecoration(
-                                          color: Colors.orange,
-                                          borderRadius: BorderRadius.circular(
-                                            6,
-                                          ),
+                                          color: Colors.blue,
+                                          borderRadius: BorderRadius.circular(6),
                                         ),
                                         child: const Text(
-                                          "ECONOMY",
+                                          "TECH",
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 12,
@@ -175,11 +166,14 @@ class _EconomyNewsPageState extends State<EconomyNewsPage> {
                                           ),
                                         ),
                                       ),
-                                      Text(
-                                        article.source?.name ?? '',
-                                        style: const TextStyle(
-                                          fontSize: 10,
-                                          color: Colors.grey,
+                                      Flexible(
+                                        child: Text(
+                                          article.source?.name ?? '',
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            fontSize: 10,
+                                            color: Colors.grey,
+                                          ),
                                         ),
                                       ),
                                     ],

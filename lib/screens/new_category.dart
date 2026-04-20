@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:my_app/providers/news_provider.dart';
 import 'package:provider/provider.dart';
 import 'auth/loginscreen.dart';
-// Make sure you import this
 import 'economyscreen.dart';
+import 'artscreen.dart';
+import 'techscreen.dart';
+import 'sportsscreen.dart';
 
 class NewsCategoryScreen extends StatefulWidget {
   const NewsCategoryScreen({super.key});
@@ -24,7 +26,6 @@ class _NewsCategoryScreenState extends State<NewsCategoryScreen> {
           duration: Duration(seconds: 2),
         ),
       );
-
       Provider.of<NewsProvider>(context, listen: false).fetchAllNewsData();
     });
   }
@@ -81,7 +82,6 @@ class _NewsCategoryScreenState extends State<NewsCategoryScreen> {
                 ],
               ),
             ),
-
             Expanded(
               child: GridView.builder(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -89,13 +89,12 @@ class _NewsCategoryScreenState extends State<NewsCategoryScreen> {
                   crossAxisCount: 3,
                   crossAxisSpacing: 8,
                   mainAxisSpacing: 8,
-                  childAspectRatio: 0.65,
+                  childAspectRatio: 0.35,
                 ),
                 itemCount: categories.length,
                 itemBuilder: (context, index) {
                   final String title = categories[index]['title'] ?? 'No Title';
                   final String image = categories[index]['image'] ?? '';
-
                   return categoryBox(title, image);
                 },
               ),
@@ -110,10 +109,13 @@ class _NewsCategoryScreenState extends State<NewsCategoryScreen> {
     return GestureDetector(
       onTap: () {
         if (title == 'Economy') {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const EconomyNewsPage()),
-          );
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const EconomyNewsPage()));
+        } else if (title == 'Art') {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const ArtNewsPage()));
+        } else if (title == 'Tech') {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const TechNewsPage()));
+        } else if (title == 'Sport') {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const SportsNewsPage()));
         } else {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
           ScaffoldMessenger.of(context).showSnackBar(
@@ -130,7 +132,9 @@ class _NewsCategoryScreenState extends State<NewsCategoryScreen> {
           image: DecorationImage(
             image: AssetImage(imagePath),
             fit: BoxFit.cover,
-            onError: (exception, stackTrace) => const Icon(Icons.error),
+            onError: (exception, stackTrace) {
+              debugPrint('Error loading image ($imagePath): $exception');
+            },
           ),
         ),
         child: Container(

@@ -8,6 +8,8 @@ class NewsProvider extends ChangeNotifier {
   final List<Articles> generalNewsList = [];
   final List<Articles> artNewsList = [];
   final List<Articles> economyNewsList = [];
+  final List<Articles> techNewsList = [];
+  final List<Articles> sportsNewsList = [];
   bool stillFetching = false;
 
   final Dio dio = Dio();
@@ -23,6 +25,12 @@ class NewsProvider extends ChangeNotifier {
 
   Future<void> fetchEconomyNews() async =>
       _fetchNews(economyNewsAPI, economyNewsList);
+
+  Future<void> fetchTechNews() async =>
+      _fetchNews(techNewsAPI, techNewsList);
+
+  Future<void> fetchSportsNews() async =>
+      _fetchNews(sportsNewsAPI, sportsNewsList);
 
   Future<void> _fetchNews(String apiUrl, List<Articles> targetList) async {
     try {

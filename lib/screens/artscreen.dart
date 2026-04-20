@@ -2,30 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:my_app/providers/news_provider.dart';
 import 'package:provider/provider.dart';
 
-class NewsArticle {
-  final String imageUrl;
-  final String title;
-  final String timestamp;
-
-  NewsArticle({
-    required this.imageUrl,
-    required this.title,
-    required this.timestamp,
-  });
-}
-
-class EconomyNewsPage extends StatefulWidget {
-  const EconomyNewsPage({super.key});
+class ArtNewsPage extends StatefulWidget {
+  const ArtNewsPage({super.key});
 
   @override
-  State<EconomyNewsPage> createState() => _EconomyNewsPageState();
+  State<ArtNewsPage> createState() => _ArtNewsPageState();
 }
 
-class _EconomyNewsPageState extends State<EconomyNewsPage> {
+class _ArtNewsPageState extends State<ArtNewsPage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<NewsProvider>(context, listen: false).fetchEconomyNews();
+    Provider.of<NewsProvider>(context, listen: false).fetchArtNews();
   }
 
   @override
@@ -37,7 +25,7 @@ class _EconomyNewsPageState extends State<EconomyNewsPage> {
         elevation: 0,
         centerTitle: true,
         title: const Text(
-          "Economy News",
+          "Art News",
           style: TextStyle(
             color: Colors.red,
             fontSize: 22,
@@ -52,7 +40,7 @@ class _EconomyNewsPageState extends State<EconomyNewsPage> {
       body: Consumer<NewsProvider>(
         builder: (context, provider, widget) {
           if (provider.stillFetching) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           return SingleChildScrollView(
             child: Column(
@@ -61,7 +49,7 @@ class _EconomyNewsPageState extends State<EconomyNewsPage> {
                 Stack(
                   children: [
                     Image.asset(
-                      'assets/economy.png',
+                      'assets/art.png',
                       width: double.infinity,
                       height: 260,
                       fit: BoxFit.cover,
@@ -75,7 +63,7 @@ class _EconomyNewsPageState extends State<EconomyNewsPage> {
                       left: 15,
                       right: 15,
                       child: Text(
-                        "Latest Economy & Finance News around the world",
+                        "Latest Art & Culture News around the world",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 22,
@@ -90,21 +78,20 @@ class _EconomyNewsPageState extends State<EconomyNewsPage> {
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: provider.economyNewsList.length,
+                  itemCount: provider.artNewsList.length,
                   itemBuilder: (context, index) {
-                    final article = provider.economyNewsList[index];
-                    
+                    final article = provider.artNewsList[index];
+
                     // Handle potential URL issues
                     String imageUrl = article.urlToImage ?? "";
                     if (imageUrl.startsWith("//")) {
                       imageUrl = "https:$imageUrl";
                     }
-                    final bool hasValidUrl = imageUrl.isNotEmpty && imageUrl.startsWith('http');
-
-                    // InkWell makes the item "Pressable"
+                    final bool hasValidUrl =
+                        imageUrl.isNotEmpty && imageUrl.startsWith('http');
+                    
                     return InkWell(
                       onTap: () {
-                        // This is where the code goes when you press it
                         print("You pressed: ${article.title}");
                       },
                       child: Padding(
@@ -125,18 +112,14 @@ class _EconomyNewsPageState extends State<EconomyNewsPage> {
                                       fit: BoxFit.cover,
                                       errorBuilder:
                                           (context, error, stackTrace) =>
-                                              Image.asset(
-                                        'assets/economy.png',
-                                        width: 110,
-                                        height: 110,
-                                        fit: BoxFit.cover,
+                                              const Icon(
+                                        Icons.broken_image,
+                                        size: 110,
                                       ),
                                     )
-                                  : Image.asset(
-                                      'assets/economy.png',
-                                      width: 110,
-                                      height: 110,
-                                      fit: BoxFit.cover,
+                                  : const Icon(
+                                      Icons.broken_image,
+                                      size: 110,
                                     ),
                             ),
                             const SizedBox(width: 12),
@@ -161,13 +144,13 @@ class _EconomyNewsPageState extends State<EconomyNewsPage> {
                                           vertical: 6,
                                         ),
                                         decoration: BoxDecoration(
-                                          color: Colors.orange,
+                                          color: Colors.purple,
                                           borderRadius: BorderRadius.circular(
                                             6,
                                           ),
                                         ),
                                         child: const Text(
-                                          "ECONOMY",
+                                          "ART",
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 12,
