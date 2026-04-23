@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_app/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 // Make sure this path correctly points to your auth_provider.dart file
-import '../new_category.dart';
+import '../home/new_category.dart';
 import 'sign_up.dart';
 
 class Loginscreen extends StatefulWidget {

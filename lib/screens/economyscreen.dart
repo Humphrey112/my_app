@@ -51,9 +51,9 @@ class _EconomyNewsPageState extends State<EconomyNewsPage> {
       ),
       body: Consumer<NewsProvider>(
         builder: (context, provider, widget) {
-          if (provider.stillFetching) {
-            return Center(child: CircularProgressIndicator());
-          }
+          // if (provider.stillFetching) {
+          //   return Center(child: CircularProgressIndicator());
+          // }
           return SingleChildScrollView(
             child: Column(
               children: [
@@ -93,13 +93,14 @@ class _EconomyNewsPageState extends State<EconomyNewsPage> {
                   itemCount: provider.economyNewsList.length,
                   itemBuilder: (context, index) {
                     final article = provider.economyNewsList[index];
-                    
+
                     // Handle potential URL issues
                     String imageUrl = article.urlToImage ?? "";
                     if (imageUrl.startsWith("//")) {
                       imageUrl = "https:$imageUrl";
                     }
-                    final bool hasValidUrl = imageUrl.isNotEmpty && imageUrl.startsWith('http');
+                    final bool hasValidUrl =
+                        imageUrl.isNotEmpty && imageUrl.startsWith('http');
 
                     // InkWell makes the item "Pressable"
                     return InkWell(
@@ -126,11 +127,11 @@ class _EconomyNewsPageState extends State<EconomyNewsPage> {
                                       errorBuilder:
                                           (context, error, stackTrace) =>
                                               Image.asset(
-                                        'assets/economy.png',
-                                        width: 110,
-                                        height: 110,
-                                        fit: BoxFit.cover,
-                                      ),
+                                                'assets/economy.png',
+                                                width: 110,
+                                                height: 110,
+                                                fit: BoxFit.cover,
+                                              ),
                                     )
                                   : Image.asset(
                                       'assets/economy.png',

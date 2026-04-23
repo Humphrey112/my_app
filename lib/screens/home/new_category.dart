@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/providers/news_provider.dart';
 import 'package:provider/provider.dart';
-import 'auth/loginscreen.dart';
-import 'economyscreen.dart';
-import 'artscreen.dart';
-import 'techscreen.dart';
-import 'sportsscreen.dart';
+import '../auth/loginscreen.dart';
+import 'news_list_screen.dart';
 
 class NewsCategoryScreen extends StatefulWidget {
   const NewsCategoryScreen({super.key});
@@ -26,7 +23,7 @@ class _NewsCategoryScreenState extends State<NewsCategoryScreen> {
           duration: Duration(seconds: 2),
         ),
       );
-      Provider.of<NewsProvider>(context, listen: false).fetchAllNewsData();
+      // Provider.of<NewsProvider>(context, listen: false).fetchAllNewsData();
     });
   }
 
@@ -89,7 +86,7 @@ class _NewsCategoryScreenState extends State<NewsCategoryScreen> {
                   crossAxisCount: 3,
                   crossAxisSpacing: 8,
                   mainAxisSpacing: 8,
-                  childAspectRatio: 0.35,
+                  childAspectRatio: 0.45,
                 ),
                 itemCount: categories.length,
                 itemBuilder: (context, index) {
@@ -108,23 +105,10 @@ class _NewsCategoryScreenState extends State<NewsCategoryScreen> {
   Widget categoryBox(String title, String imagePath) {
     return GestureDetector(
       onTap: () {
-        if (title == 'Economy') {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const EconomyNewsPage()));
-        } else if (title == 'Art') {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const ArtNewsPage()));
-        } else if (title == 'Tech') {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const TechNewsPage()));
-        } else if (title == 'Sport') {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const SportsNewsPage()));
-        } else {
-          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('$title category selected'),
-              duration: const Duration(milliseconds: 700),
-            ),
-          );
-        }
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => NewsListScreen(title: title)),
+        );
       },
       child: Container(
         decoration: BoxDecoration(

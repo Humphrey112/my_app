@@ -26,28 +26,4 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/micNews.PNG
-    - assets/newsPaper.PNG
-    - assets/work.png
-    - assets/art.png
-    - assets/economy.png
-    - assets/fun.png
-    - assets/general.png
-    - assets/health.png
-    - assets/music.png
-    - assets/science.png
-    - assets/sports.png
-    - assets/tech.png
-    - assets/img1.jpeg
-    - assets/img2.jpeg
-    - assets/img3.jpeg
-    - assets/img4.jpeg
-    - assets/img5.jpeg
-    - assets/img6.jpeg
-    - assets/img7.jpeg
-    - assets/img8.jpeg
-    - assets/img9.jpeg
-    - assets/img10.jpeg
-    - assets/img11.jpeg
-    - assets/img12.jpeg
-    - assets/img13.jpeg
+    - assets/

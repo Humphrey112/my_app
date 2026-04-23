@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'providers/auth_provider.dart';
 import 'providers/news_provider.dart';
 import 'screens/Onboarding.dart';
+import 'screens/home/new_category.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // This sets your custom LoginScreen as the first thing users see
-      home: const OnboardingPage(),
+      home: const NewsCategoryScreen(),
     );
   }
 }
