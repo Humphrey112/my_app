@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/providers/news_provider.dart';
 import 'package:provider/provider.dart';
+import '../../models/news_model.dart';
 import '../auth/loginscreen.dart';
 import 'news_list_screen.dart';
 
@@ -104,7 +105,41 @@ class _NewsCategoryScreenState extends State<NewsCategoryScreen> {
 
   Widget categoryBox(String title, String imagePath) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async{
+
+        List<Article>? article;
+        final newsProvider = Provider.of<NewsProvider>(context, listen: false);
+
+        switch(title){
+          case 'Tech':
+          await newsProvider.fetchTechNews();
+          article = newsProvider.techNewsList;
+          case 'Economy':
+          await newsProvider.fetchEconomyNews();
+          article = newsProvider.economyNewsList;
+          case 'Sport':
+          await newsProvider.fetchSportsNews();
+          article = newsProvider.sportsNewsList;
+          case 'Health':
+          await newsProvider.fetchHealthNews();
+          article = newsProvider.healthNewsList;
+          case 'Fun':
+          await newsProvider.fetchSportsNews();
+          article = newsProvider.sportsNewsList;
+          case 'Science':
+          await newsProvider.fetchScienceNews();
+          article = newsProvider.scienceNewsList;
+          case 'General':
+          await newsProvider.fetchGeneralNews();
+          article = newsProvider.generalNewsList;
+          case 'Music':
+          await newsProvider.fetchMusicNews();
+          article = newsProvider.musicNewsList;
+          case 'Art':
+          await newsProvider.fetchArtNews();
+          article = newsProvider.artNewsList;
+        }
+        
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => NewsListScreen(title: title)),

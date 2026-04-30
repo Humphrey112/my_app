@@ -18,7 +18,7 @@ class NewsProvider extends ChangeNotifier {
   bool isLoading = false;
 
   final Dio dio = Dio();
-
+/*
   // Future<void> fetchAllNewsData() async {
   //   await fetchGeneralNewsData();
   // }
@@ -34,7 +34,7 @@ class NewsProvider extends ChangeNotifier {
   // Future<void> fetchTechNews() async => _fetchNews(techNewsAPI, techNewsList);
 
   // Future<void> fetchSportsNews() async =>
-  //     _fetchNews(sportsNewsAPI, sportsNewsList);
+  //     _fetchNews(sportsNewsAPI, sportsNewsList);*/
 
   //FETCH GENERAL NEWS
   Future<void> fetchGeneralNews() async {
