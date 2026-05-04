@@ -18,7 +18,7 @@ class NewsProvider extends ChangeNotifier {
   bool isLoading = false;
 
   final Dio dio = Dio();
-/*
+  /*
   // Future<void> fetchAllNewsData() async {
   //   await fetchGeneralNewsData();
   // }
@@ -142,7 +142,7 @@ class NewsProvider extends ChangeNotifier {
       isLoading = true;
       notifyListeners();
 
-      final response = await dio.get(generalNewsAPI);
+      final response = await dio.get(funNewsAPI);
 
       if (response.statusCode == 200) {
         List<Article> newsList = (response.data["articles"] as List)
@@ -211,7 +211,7 @@ class NewsProvider extends ChangeNotifier {
     }
   }
 
-  //FETCH GENERAL NEWS
+  //FETCH MUSIC NEWS
   Future<void> fetchMusicNews() async {
     try {
       isLoading = true;
@@ -236,7 +236,7 @@ class NewsProvider extends ChangeNotifier {
     }
   }
 
-  //FETCH GENERAL NEWS
+  //FETCH ART NEWS
   Future<void> fetchArtNews() async {
     try {
       isLoading = true;

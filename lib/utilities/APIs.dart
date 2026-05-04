@@ -22,7 +22,7 @@ const String techNewsAPI =
     "https://newsapi.org/v2/everything?q=technology&sortBy=publishedAt&apiKey=$NEWS_API_KEY";
 
 const String healthNewsAPI =
-    "https://newsapi.org/v2/everything?q=technology&sortBy=publishedAt&apiKey=$NEWS_API_KEY";
+    "https://newsapi.org/v2/everything?q=health&sortBy=publishedAt&apiKey=$NEWS_API_KEY";
 
 const String economyNewsAPI =
     "https://newsapi.org/v2/everything?q=economy&sortBy=publishedAt&apiKey=$NEWS_API_KEY";

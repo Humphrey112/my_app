@@ -5,17 +5,53 @@ import 'package:provider/provider.dart';
 import '../../models/news_model.dart';
 
 class NewsListScreen extends StatefulWidget {
-  const NewsListScreen({super.key, required this.title, this.article});
+  const NewsListScreen({super.key, required this.title});
 
   final String title;
-  final List<Article>? article;
 
   @override
   State<NewsListScreen> createState() => _NewsListScreenState();
 }
 
 class _NewsListScreenState extends State<NewsListScreen> {
-  bool hasValidUrl = false;
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = Provider.of<NewsProvider>(context, listen: false);
+
+      switch (widget.title) {
+        case 'Tech':
+          provider.fetchTechNews();
+          break;
+        case 'Economy':
+          provider.fetchEconomyNews();
+          break;
+        case 'Sport':
+          provider.fetchSportsNews();
+          break;
+        case 'Health':
+          provider.fetchHealthNews();
+          break;
+        case 'Fun':
+          provider.fetchFunNews();
+          break;
+        case 'Science':
+          provider.fetchScienceNews();
+          break;
+        case 'General':
+          provider.fetchGeneralNews();
+          break;
+        case 'Music':
+          provider.fetchMusicNews();
+          break;
+        case 'Art':
+          provider.fetchArtNews();
+          break;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +63,7 @@ class _NewsListScreenState extends State<NewsListScreen> {
         centerTitle: true,
         title: Text(
           "${widget.title} News",
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.red,
             fontSize: 22,
             fontWeight: FontWeight.bold,
@@ -40,34 +76,73 @@ class _NewsListScreenState extends State<NewsListScreen> {
       ),
       body: Consumer<NewsProvider>(
         builder: (context, provider, child) {
+          if (provider.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-          if(provider.isLoading){
-            return Center(child: CircularProgressIndicator(),);
+          List<Article> articles;
+
+          switch (widget.title) {
+            case 'Tech':
+              articles = provider.techNewsList;
+              break;
+            case 'Economy':
+              articles = provider.economyNewsList;
+              break;
+            case 'Sport':
+              articles = provider.sportsNewsList;
+              break;
+            case 'Health':
+              articles = provider.healthNewsList;
+              break;
+            case 'Fun':
+              articles = provider.funNewsList;
+              break;
+            case 'Science':
+              articles = provider.scienceNewsList;
+              break;
+            case 'General':
+              articles = provider.generalNewsList;
+              break;
+            case 'Music':
+              articles = provider.musicNewsList;
+              break;
+            case 'Art':
+              articles = provider.artNewsList;
+              break;
+            default:
+              articles = [];
+          }
+
+          if (articles.isEmpty) {
+            return const Center(child: Text("No news available"));
           }
 
           return SingleChildScrollView(
             child: Column(
               children: [
-                // Header Image
+                // HEADER IMAGE
                 Stack(
                   children: [
-                    Image.asset(
-                      'assets/art.png',
-                      width: double.infinity,
-                      height: 260,
-                      fit: BoxFit.cover,
-                    ),
+                    (articles[0].urlToImage?.isEmpty ?? false)
+                        ? const Icon(Icons.broken_image, size: 110)
+                        : Image.network(
+                            articles[0].urlToImage ?? '',
+                            width: double.infinity,
+                            height: 260,
+                            fit: BoxFit.cover,
+                          ),
                     Container(
                       height: 260,
                       color: const Color.fromARGB(24, 33, 149, 243),
                     ),
-                    const Positioned(
+                    Positioned(
                       bottom: 20,
                       left: 15,
                       right: 15,
                       child: Text(
-                        "Latest Art & Culture News around the world",
-                        style: TextStyle(
+                        "Latest ${widget.title} News around the world",
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
@@ -76,13 +151,21 @@ class _NewsListScreenState extends State<NewsListScreen> {
                     ),
                   ],
                 ),
+
                 const SizedBox(height: 10),
-                // The News List
+
+                // NEWS LIST
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: widget.article?.length,
+                  itemCount: articles.length,
                   itemBuilder: (context, index) {
+                    final article = articles[index];
+
+                    final hasImage =
+                        article.urlToImage != null &&
+                        article.urlToImage!.isNotEmpty;
+
                     return InkWell(
                       onTap: () {},
                       child: Padding(
@@ -95,14 +178,18 @@ class _NewsListScreenState extends State<NewsListScreen> {
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(10),
-                              child: hasValidUrl
+                              child: hasImage
                                   ? Image.network(
-                                      widget.article?[index].urlToImage??'',
+                                      article.urlToImage!,
                                       width: 110,
                                       height: 110,
                                       fit: BoxFit.cover,
-                                      errorBuilder: (context, error, stackTrace) =>
-                                          const Icon(Icons.broken_image, size: 110),
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              const Icon(
+                                                Icons.broken_image,
+                                                size: 110,
+                                              ),
                                     )
                                   : const Icon(Icons.broken_image, size: 110),
                             ),
@@ -112,7 +199,7 @@ class _NewsListScreenState extends State<NewsListScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                      widget.article?[index].title??'',
+                                    article.title ?? '',
                                     maxLines: 3,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(fontSize: 15),
@@ -129,11 +216,15 @@ class _NewsListScreenState extends State<NewsListScreen> {
                                         ),
                                         decoration: BoxDecoration(
                                           color: Colors.purple,
-                                          borderRadius: BorderRadius.circular(6),
+                                          borderRadius: BorderRadius.circular(
+                                            6,
+                                          ),
                                         ),
                                         child: Text(
-                                            widget.article?[index].content??'',
-                                          style: TextStyle(
+                                          article.author ?? 'News',
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 12,
                                             fontWeight: FontWeight.bold,
@@ -141,7 +232,7 @@ class _NewsListScreenState extends State<NewsListScreen> {
                                         ),
                                       ),
                                       Text(
-                                          widget.article?[index].source.name??'',
+                                        article.source.name ?? '',
                                         style: const TextStyle(
                                           fontSize: 10,
                                           color: Colors.grey,
@@ -161,7 +252,7 @@ class _NewsListScreenState extends State<NewsListScreen> {
               ],
             ),
           );
-        }
+        },
       ),
     );
   }
